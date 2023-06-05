@@ -2,19 +2,19 @@ describe Review do
   let(:review) { Review.first }
 
   before do
-    game = Game.create(title: "Mario Kart", platform: "Switch", genre: "Racing", price: 60)
-    user = User.create(name: "Liza")
-    Review.create(score: 8, comment: "A classic", game_id: game.id, user_id: user.id)
+    game = Product.create(name: "iWatch", description: "This is an apple watch")
+    user = User.create(name: "Bellah")
+    Review.create(content: "A classic", product_id: product.id, user_id: user1.id)
   end
   
   it "has the correct columns in the reviews table" do
-    expect(review).to have_attributes(score: 8, comment: "A classic", game_id: Game.first.id, user_id: User.first.id)
+    expect(review).to have_attributes(content: "A classic", product_id: product.id, user_id: user1.id)
   end
 
-  it "knows about its associated game" do
-    game = Game.find(review.game_id)
+  it "knows about its associated product" do
+    product = Product.find(review.product_id)
 
-    expect(review.game).to eq(game)
+    expect(review.product).to eq(product)
   end
 
   it "knows about its associated user" do
@@ -23,17 +23,17 @@ describe Review do
     expect(review.user).to eq(user)
   end
 
-  it "can create an associated game using the game instance" do
-    game = Game.first
-    review = Review.create(score: 10, comment: "10 stars", game: game)
+  it "can create an associated product using the product instance" do
+    product = Product.first
+    review = Review.create(score: 10, comment: "10 stars", product: product)
     
-    expect(review.game).to eq(game)
+    expect(review.product).to eq(product)
   end
 
-  it "can create an associated game with the #create_game method" do
+  it "can create an associated product with the #create_product method" do
     expect do
-      review = Review.create(score: 8, comment: "wow, what a game")
-      review.create_game(title: "My favorite game")
+      review = Review.create(comment: "Awesome")
+      review.create_product(title: "My favorite product")
       review.save
     end.to change(Game, :count).by(1)
   end
